@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bangla Play | Secure Account</title>
+<style>*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,system-ui,-apple-system,"Segoe UI",sans-serif;color:#f8fff9}body{min-height:100vh;display:grid;place-items:center;background:#071a13;overflow:auto}.bg{position:fixed;inset:0;background:radial-gradient(ellipse at 50% -10%,#1c5a3c 0,transparent 55%),radial-gradient(ellipse at 100% 80%,#4c1b25 0,transparent 42%),#071a13}.shade{position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.52))}.card{position:relative;width:min(440px,calc(100% - 26px));margin:22px 0;padding:26px 23px 22px;border:1px solid #d8b65a55;border-radius:20px;background:linear-gradient(155deg,rgba(20,48,34,.97),rgba(8,24,18,.97));box-shadow:0 25px 80px #0008}.logo{display:flex;align-items:center;gap:10px;margin-bottom:23px}.mark{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;font-weight:1000;background:linear-gradient(145deg,#f8d777,#b78020);color:#17321e;box-shadow:0 5px 20px #c59b3740}.brand{font-weight:900;font-size:20px;letter-spacing:.03em}.pill{margin-left:auto;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#e8d08c;border:1px solid #d8b65a66;padding:6px 9px;border-radius:99px}h1{margin:0 0 8px;font-size:28px;letter-spacing:-.03em}.sub{margin:0 0 23px;color:#a8c2b0;font-size:13px;line-height:1.6}label{display:block;margin:0 0 7px;color:#c8d9ce;font-size:10px;font-weight:800;letter-spacing:.08em}input{width:100%;padding:13px 14px;margin:0 0 15px;border-radius:10px;border:1px solid #476653;outline:none;background:#06140e;color:#fff;font-size:14px}input:focus{border-color:#d8b65a;box-shadow:0 0 0 3px #d8b65a1c}.names{display:grid;grid-template-columns:1fr 1fr;gap:10px}.names input{min-width:0}.referral{margin:-2px 0 2px}.referral input{margin-bottom:8px}.referral-note{display:block;margin:-3px 0 14px;color:#829a8b;font-size:9px}button{width:100%;height:49px;border:0;border-radius:10px;color:#132617;font-size:13px;font-weight:900;cursor:pointer;background:linear-gradient(100deg,#f5d77e,#c9a13e);box-shadow:0 9px 24px #c9a13e24}button:disabled{opacity:.6;cursor:wait}.links{display:flex;justify-content:space-between;gap:12px;margin-top:16px;font-size:11px}.link{color:#f3d578;cursor:pointer}.muted{color:#819a89}.msg{min-height:20px;margin-top:13px;text-align:center;color:#b8cdbd;font-size:11px;line-height:1.5}.ok{color:#8bffbd!important}.notice{margin:-7px 0 18px;padding:10px 12px;border:1px solid #d8b65a55;border-radius:10px;background:#d8b65a0c;color:#f1d993;font-size:11px;line-height:1.5}.footer{text-align:center;margin-top:20px;color:#6d8b78;font-size:9px;letter-spacing:.12em;text-transform:uppercase}.social-auth{margin-top:17px}.or{display:flex;align-items:center;gap:10px;color:#76907f;font-size:9px;letter-spacing:.12em;margin:14px 0}.or:before,.or:after{content:"";height:1px;flex:1;background:#ffffff17}.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.social-btn{height:43px!important;border:1px solid #ffffff24!important;border-radius:10px!important;background:#ffffff08!important;box-shadow:none!important;color:#f0f7f2!important;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;font-weight:750}.social-btn:hover{background:#ffffff12!important}.gicon,.xicon{width:20px;height:20px;display:grid;place-items:center;font-weight:900;font-size:15px}.xicon{font-size:18px}.hidden{display:none!important}@media(max-width:450px){.card{padding:24px 19px 20px}.pill{display:none}.names{grid-template-columns:1fr}h1{font-size:25px}}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="bg"></div><div class="shade"></div>
+<main class="card">
+<div class="logo"><div class="mark">N</div><div class="brand">BANGLA PLAY</div><div class="pill">Secure access</div></div>
+<div id="notice" class="notice hidden">Email verified. Finish setting up your BANGLA PLAY account.</div>
+<h1 id="title">Welcome back</h1>
+<p id="sub" class="sub">Sign in to continue to your Bangla Play account.</p>
+
+<form id="form">
+<div id="names" class="names hidden">
+<div><label for="first">FIRST NAME</label><input id="first" type="text" autocomplete="given-name" placeholder="First name"></div>
+<div><label for="last">LAST NAME</label><input id="last" type="text" autocomplete="family-name" placeholder="Last name"></div>
+</div>
+<div><label for="email">EMAIL</label><input id="email" type="email" required autocomplete="email" placeholder="you@example.com"></div>
+<div id="passwordBlock"><label for="password">PASSWORD</label><input id="password" type="password" minlength="8" required autocomplete="current-password" placeholder="Your password"></div>
+<div id="confirmCreateBlock" class="hidden"><label for="confirmCreatePassword">CONFIRM PASSWORD</label><input id="confirmCreatePassword" type="password" minlength="8" autocomplete="new-password" placeholder="Repeat your password"></div>
+<div id="referralBlock" class="referral hidden"><input id="referralCode" type="hidden" value=""></div>
+<div id="codeBlock" class="hidden"><label for="recoveryCode">VERIFICATION CODE</label><input id="recoveryCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="8-digit code"></div>
+<div id="newPasswordBlock" class="hidden">
+<label for="newPassword">NEW PASSWORD</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters">
+<label for="confirmPassword">CONFIRM PASSWORD</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Repeat your password">
+</div>
+<button id="submit" type="submit">Sign in</button>
+<div id="socialAuth" class="social-auth">
+  <div class="or"><span>OR CONTINUE WITH</span></div>
+  <div class="social-grid">
+    <button id="googleBtn" class="social-btn" type="button"><span class="gicon">G</span><span>Google</span></button>
+    <button id="xBtn" class="social-btn" type="button"><span class="xicon">𝕏</span><span>X</span></button>
+  </div>
+</div>
+</form>
+
+<div id="msg" class="msg"></div>
+<div class="links">
+<span id="forgot" class="link">Forgot password?</span>
+<span id="switch" class="link">Create an account</span>
+</div>
+<div id="back" class="links hidden"><span class="link">← Back to sign in</span></div>
+<div class="footer">BANGLA PLAY · Games · Quizzes · Challenges</div>
+</main>
+
+<script>
+const SUPABASE_URL="https://vjygltfnrmyghlwyjtwu.supabase.co";
+const SUPABASE_KEY="sb_publishable_SL6n4Q0t_AxHywHM6iMkpg_bm-lx_Oh";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const form=document.getElementById("form"),email=document.getElementById("email"),password=document.getElementById("password");
+const first=document.getElementById("first"),last=document.getElementById("last"),referralCode=document.getElementById("referralCode"),recoveryCode=document.getElementById("recoveryCode"),newPassword=document.getElementById("newPassword"),confirmPassword=document.getElementById("confirmPassword"),confirmCreatePassword=document.getElementById("confirmCreatePassword");
+const names=document.getElementById("names"),referralBlock=document.getElementById("referralBlock"),passwordBlock=document.getElementById("passwordBlock"),confirmCreateBlock=document.getElementById("confirmCreateBlock"),codeBlock=document.getElementById("codeBlock"),newPasswordBlock=document.getElementById("newPasswordBlock");
+const title=document.getElementById("title"),sub=document.getElementById("sub"),submit=document.getElementById("submit"),msg=document.getElementById("msg");
+const forgot=document.getElementById("forgot"),switchBtn=document.getElementById("switch"),back=document.getElementById("back"),notice=document.getElementById("notice");
+const socialAuth=document.getElementById("socialAuth"),googleBtn=document.getElementById("googleBtn"),xBtn=document.getElementById("xBtn");
+
+googleBtn.onclick=async()=>{
+  googleBtn.disabled=true;
+  setMsg("Opening Google sign-in…");
+  try{
+    sessionStorage.setItem("moneyapp_oauth_mode",mode);
+    sessionStorage.setItem("moneyapp_oauth_ref",(referralCode?.value||incomingRef||"").trim());
+    const redirectUrl=new URL("account.html",location.href);
+    redirectUrl.search="";
+    redirectUrl.hash="";
+    const {error}=await sb.auth.signInWithOAuth({
+      provider:"google",
+      options:{redirectTo:redirectUrl.toString()}
+    });
+    if(error)throw error;
+  }catch(err){
+    setMsg(err?.message||"Google sign-in could not be started.");
+    googleBtn.disabled=false;
+  }
+};
+
+xBtn.onclick=async()=>{
+  xBtn.disabled=true;
+  setMsg("X sign-in is not available yet.");
+  setTimeout(()=>{xBtn.disabled=false;},1200);
+};
+
+let mode="signin";
+const PENDING_SIGNUP_KEY="moneyapp_pending_signup_v1";
+const params=new URLSearchParams(location.search);
+const requestedMode=(params.get("mode")||"").trim();
+const verified=params.get("verified")==="1";
+const incomingRef=(params.get("ref")||"").trim().replace(/[^a-zA-Z0-9_-]/g,"").slice(0,64);
+if(incomingRef || requestedMode==="create") mode="create";
+const recovery=location.hash.includes("type=recovery") || new URLSearchParams(location.search).get("type")==="recovery";
+
+function savePendingSignup(){
+  sessionStorage.setItem(PENDING_SIGNUP_KEY,JSON.stringify({
+    email:email.value.trim(),
+    first:first.value.trim(),
+    last:last.value.trim(),
+    ref:referralCode.value.trim(),
+    createdAt:Date.now()
+  }));
+}
+function loadPendingSignup(){
+  try{
+    const raw=sessionStorage.getItem(PENDING_SIGNUP_KEY);
+    if(!raw)return false;
+    const p=JSON.parse(raw);
+    if(!p?.email||!p?.createdAt||Date.now()-p.createdAt>10*60*1000){
+      sessionStorage.removeItem(PENDING_SIGNUP_KEY);return false;
+    }
+    email.value=p.email;first.value=p.first||"";last.value=p.last||"";referralCode.value=p.ref||"";
+    mode="verifySignup";return true;
+  }catch(_){sessionStorage.removeItem(PENDING_SIGNUP_KEY);return false;}
+}
+function clearPendingSignup(){sessionStorage.removeItem(PENDING_SIGNUP_KEY);}
+
+function setMsg(t,ok=false){msg.textContent=t;msg.classList.toggle("ok",ok)}
+
+function render(){
+  const setup=mode==="setup", create=mode==="create", forgotMode=mode==="forgot", verifyCode=mode==="verifyCode", verifySignup=mode==="verifySignup", reset=mode==="reset";
+  notice.classList.toggle("hidden",!setup);
+  names.classList.toggle("hidden",!setup&&!create); referralBlock.classList.toggle("hidden",!create);
+  passwordBlock.classList.toggle("hidden",!["signin","create"].includes(mode));
+  confirmCreateBlock.classList.toggle("hidden",mode!=="create");
+  codeBlock.classList.toggle("hidden",!verifyCode&&!verifySignup);
+  newPasswordBlock.classList.toggle("hidden",!setup&&!reset);
+  email.readOnly=setup||verifyCode||verifySignup||reset;
+  first.required=setup||create;last.required=setup||create;
+  password.required=mode==="signin"||mode==="create";
+  confirmCreatePassword.required=create;
+  recoveryCode.required=verifyCode||verifySignup;
+  newPassword.required=setup||reset;confirmPassword.required=setup||reset;
+  if(setup){title.textContent="Finish your account";sub.textContent="Your email is verified. Create a password to activate your account.";submit.textContent="Activate account";}
+  else if(create){title.textContent="Create your account";sub.textContent="Enter your details and password. We’ll send a verification code to your email.";submit.textContent="Send verification code";}
+  else if(verifySignup){title.textContent="Verify your email";sub.textContent="Enter the 8-digit code sent to your email to create your account.";submit.textContent="Verify & create account";}
+  else if(forgotMode){title.textContent="Forgot password";sub.textContent="Enter your email and we’ll send a secure password reset link.";submit.textContent="Send reset link";}
+  else if(verifyCode){title.textContent="Enter recovery code";sub.textContent="Enter the 8-digit code, or open the secure reset link in your email.";submit.textContent="Verify code";}
+  else if(reset){title.textContent="Reset your password";sub.textContent="Choose a new password for your BANGLA PLAY account.";submit.textContent="Change password";}
+  else{title.textContent="Welcome back";sub.textContent="Sign in to continue to your BANGLA PLAY account.";submit.textContent="Sign in";}
+  socialAuth.classList.toggle("hidden",!(mode==="signin"||mode==="create"));
+  forgot.classList.toggle("hidden",mode!=="signin");
+  switchBtn.classList.toggle("hidden",mode==="setup"||mode==="reset"||mode==="verifyCode"||mode==="verifySignup");
+  switchBtn.textContent=create?"Already have an account? Sign in":"Create an account";
+  back.classList.toggle("hidden",mode!=="reset"&&mode!=="forgot"&&mode!=="verifyCode");
+}
+
+async function checkSession(){
+  const {data,error}=await sb.auth.getSession();
+  if(error)return;
+  if(incomingRef && referralCode) referralCode.value=incomingRef;
+  if(data.session&&recovery){
+    email.value=data.session.user.email||"";
+    mode="reset";render();return;
+  }
+  if(data.session&&verified){
+    const u=data.session.user;
+    email.value=u.email||"";
+    first.value=u.user_metadata?.first_name||"";
+    last.value=u.user_metadata?.last_name||"";
+    mode="setup";render();return;
+  }
+  if(data.session&&!recovery){
+    const oauthMode=sessionStorage.getItem("moneyapp_oauth_mode");
+    const oauthRef=sessionStorage.getItem("moneyapp_oauth_ref")||"";
+    if(oauthMode==="create"){
+      sessionStorage.removeItem("moneyapp_oauth_mode");
+      sessionStorage.removeItem("moneyapp_oauth_ref");
+      const u=data.session.user;
+      const meta=u.user_metadata||{};
+      await sb.auth.updateUser({data:{
+        first_name:meta.first_name||meta.full_name?.split(" ")[0]||"",
+        last_name:meta.last_name||meta.full_name?.split(" ").slice(1).join(" ")||"",
+        account_complete:true,
+        referred_by:oauthRef||null
+      }});
+    }
+    location.replace("index.html?account=1");
+  }
+}
+
+sb.auth.onAuthStateChange((event,session)=>{
+  if(event==="PASSWORD_RECOVERY"){if(session?.user?.email)email.value=session.user.email;mode="reset";render();return;}
+  if(event==="SIGNED_IN"&&verified&&session){
+    email.value=session.user.email||"";first.value=session.user.user_metadata?.first_name||"";last.value=session.user.user_metadata?.last_name||"";
+    mode="setup";render();
+  }
+});
+
+switchBtn.onclick=()=>{mode=mode==="create"?"signin":"create";setMsg("");password.value="";confirmCreatePassword.value="";render()};
+forgot.onclick=()=>{mode="forgot";setMsg("");password.value="";recoveryCode.value="";newPassword.value="";confirmPassword.value="";render()};
+back.onclick=()=>{history.replaceState(null,"",location.pathname+location.search);mode="signin";setMsg("");password.value="";confirmCreatePassword.value="";recoveryCode.value="";newPassword.value="";confirmPassword.value="";render()};
+
+form.onsubmit=async e=>{
+  e.preventDefault();submit.disabled=true;setMsg("");
+  try{
+    if(mode==="create"){
+      if(!first.value.trim()||!last.value.trim())throw new Error("Please enter your first and last name.");
+      if(password.value.length<8)throw new Error("Password must be at least 8 characters.");
+      if(password.value!==confirmCreatePassword.value)throw new Error("Passwords do not match.");
+      const signupEmail=email.value.trim();
+      const signupOptions={data:{first_name:first.value.trim(),last_name:last.value.trim(),account_complete:false,referred_by:referralCode.value.trim()||null}};
+      const {data,error}=await sb.auth.signUp({email:signupEmail,password:password.value,options:signupOptions});
+
+      if(error){
+        // A signup click may have already created an unverified Auth user.
+        // In that case, resend the existing confirmation code instead of
+        // showing a confusing "already registered" error.
+        const {error:resendError}=await sb.auth.resend({type:"signup",email:signupEmail});
+        if(!resendError){
+          savePendingSignup();
+          mode="verifySignup";
+          setMsg("A verification code has been sent again. Enter the 8-digit code from your email.",true);
+          render();
+          return;
+        }
+        throw error;
+      }
+
+      // If Supabase has Confirm Email disabled, signUp returns a live session
+      // and no confirmation email is sent. For BANGLA PLAY we still require a
+      // 6-digit email code before activating the account, so send an OTP
+      // explicitly in that case.
+      if(data?.session){
+        const {error:otpError}=await sb.auth.signInWithOtp({
+          email:signupEmail,
+          options:{shouldCreateUser:false}
+        });
+        if(otpError)throw otpError;
+        await sb.auth.signOut();
+        setMsg("Verification code sent. Enter the 8-digit code from your email to finish creating the account.",true);
+      }else{
+        setMsg("Verification code sent. Enter the 8-digit code from your email to finish creating the account.",true);
+      }
+      savePendingSignup();
+      mode="verifySignup";
+      render();
+      return;
+    }
+
+    if(mode==="verifySignup"){
+      if(!/^\d{8}$/.test(recoveryCode.value.trim()))throw new Error("Enter the 8-digit verification code.");
+      const {data,error}=await sb.auth.verifyOtp({email:email.value.trim(),token:recoveryCode.value.trim(),type:"email"});
+      if(error)throw error;
+      if(!data.session)throw new Error("Email verification did not create a session. Please try again.");
+      const ref=(referralCode.value.trim()||data.user.user_metadata?.referred_by||"").trim();
+      const {error:updateError}=await sb.auth.updateUser({data:{first_name:first.value.trim(),last_name:last.value.trim(),account_complete:true,referred_by:ref||null}});
+      if(updateError)throw updateError;
+      clearPendingSignup();
+      setMsg("Email verified. Account created successfully. Opening BANGLA PLAY…",true);
+      setTimeout(()=>location.replace("index.html?account=1"),450);
+      return;
+    }
+
+    if(mode==="signin"){
+      const {data,error}=await sb.auth.signInWithPassword({email:email.value.trim(),password:password.value});
+      if(error)throw error;
+      if(!data.session)throw new Error("Sign in could not be completed.");
+      location.replace("index.html?account=1");return;
+    }
+
+    if(mode==="forgot"){
+      const {error}=await sb.auth.resetPasswordForEmail(email.value.trim(),{redirectTo:new URL("account.html",location.href).toString()});
+      if(error)throw error;
+      mode="verifyCode";setMsg("Check your email. Enter the 8-digit code, or open the secure reset link.",true);render();return;
+    }
+
+    if(mode==="verifyCode"){
+      if(!/^\d{8}$/.test(recoveryCode.value.trim()))throw new Error("Enter the 8-digit recovery code.");
+      const {error}=await sb.auth.verifyOtp({email:email.value.trim(),token:recoveryCode.value.trim(),type:"recovery"});
+      if(error)throw error;
+      mode="reset";recoveryCode.value="";setMsg("Code verified. Choose a new password.",true);render();return;
+    }
+
+    if(mode==="reset"){
+      if(newPassword.value.length<8)throw new Error("Password must be at least 8 characters.");
+      if(newPassword.value!==confirmPassword.value)throw new Error("Passwords do not match.");
+      const {error}=await sb.auth.updateUser({password:newPassword.value});
+      if(error)throw error;
+      await sb.auth.signOut();history.replaceState(null,"",location.pathname);
+      mode="signin";setMsg("Password changed. You can now sign in.",true);render();return;
+    }
+
+    if(mode==="setup"){
+      if(!first.value.trim()||!last.value.trim())throw new Error("Please enter your first and last name.");
+      if(newPassword.value.length<8)throw new Error("Password must be at least 8 characters.");
+      if(newPassword.value!==confirmPassword.value)throw new Error("Passwords do not match.");
+      const {error}=await sb.auth.updateUser({password:newPassword.value,data:{first_name:first.value.trim(),last_name:last.value.trim(),account_complete:true}});
+      if(error)throw error;
+      setMsg("Account activated. Opening BANGLA PLAY…",true);
+      setTimeout(()=>location.replace("index.html?account=1"),450);
+    }
+  }catch(err){setMsg(err?.message||"Something went wrong. Please try again.");}
+  finally{submit.disabled=false;}
+};
+
+if(incomingRef && referralCode) referralCode.value=incomingRef;
+const restoredPendingSignup=loadPendingSignup();
+render();
+if(restoredPendingSignup) setMsg("You already requested a verification code. Enter the 8-digit code from your email.",true);
+checkSession();
+</script>
+</body>
+</html>
