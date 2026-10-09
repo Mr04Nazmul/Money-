@@ -1,0 +1,33 @@
+name: Japan Cycle Guide Android Build
+on:
+  workflow_dispatch:
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Expo token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "Missing EXPO_TOKEN in repository Actions secrets."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        working-directory: cycle-guide
+        run: npm install
+      - name: Set up EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Initialize or link EAS project
+        working-directory: cycle-guide
+        run: npx eas-cli@latest init --force --non-interactive
+      - name: Build Android preview APK
+        working-directory: cycle-guide
+        run: npx eas-cli@latest build --platform android --profile preview --non-interactive --no-wait
