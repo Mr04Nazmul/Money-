@@ -24,6 +24,13 @@ jobs:
         with:
           node-version: "22"
           package-manager-cache: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK components
+        run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" "ndk;27.1.12297006"
       - name: Install dependencies
         working-directory: cycle-guide
         run: npm install
@@ -38,4 +45,10 @@ jobs:
         run: npx eas-cli@latest init --force --non-interactive
       - name: Build Android production AAB for Google Play
         working-directory: cycle-guide
-        run: npx eas-cli@latest build --platform android --profile production --non-interactive --no-wait
+        run: mkdir -p artifacts && npx eas-cli@latest build --platform android --profile production --non-interactive --local --output ./artifacts/japan-cycle-guide.aab
+      - name: Upload Play Store AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: japan-cycle-guide-aab
+          path: cycle-guide/artifacts/japan-cycle-guide.aab
+          if-no-files-found: error
