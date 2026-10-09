@@ -8,14 +8,7 @@
     "android": {
       "package": "com.mr04nazmul.japancycleguide"
     },
-    "plugins": [
-      [
-        "react-native-google-mobile-ads",
-        {
-          "androidAppId": "ca-app-pub-3728341118830943~9698247762"
-        }
-      ]
-    ],
+    "plugins": [],
     "extra": {
       "appPurpose": "Japan bicycle safety education; official-source links included"
     }
