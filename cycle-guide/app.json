@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Japan Cycle Guide",
+    "slug": "japan-cycle-guide",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "android": {
+      "package": "com.mr04nazmul.japancycleguide"
+    },
+    "plugins": [],
+    "extra": {
+      "appPurpose": "Japan bicycle safety education; official-source links included"
+    }
+  }
+}
