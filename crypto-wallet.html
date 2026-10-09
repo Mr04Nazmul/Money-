@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d16">
+<meta name="description" content="Money Wallet — multi-chain self-custody wallet interface preview.">
+<title>Money Wallet | Multi-chain</title>
+<style>
+:root{color-scheme:dark;--bg:#090d16;--panel:#111827;--panel2:#151e2e;--line:#ffffff12;--text:#f4f7fb;--muted:#8d9bb0;--green:#a8f36b;--cyan:#6ee7dc;--red:#ff8b9a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#183b38 0,transparent 38%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,select,input{font:inherit}button{cursor:pointer}.app{max-width:1120px;margin:auto;padding:22px 18px 40px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:26px}.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.04em;font-size:22px}.mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,var(--green),#3ab8a4);color:#09120f;font-size:20px;box-shadow:0 7px 28px #72e6aa1c}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.16em;font-weight:700;margin-top:2px}.toplinks{display:flex;gap:8px}.btn{border:1px solid var(--line);background:#ffffff08;color:var(--text);border-radius:12px;padding:11px 14px;font-size:12px;font-weight:750}.btn.primary{background:var(--green);color:#0b150d;border-color:transparent}.btn:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px}.side,.card{background:linear-gradient(155deg,#141d2b,#0f1521);border:1px solid var(--line);border-radius:20px}.side{padding:13px;height:max-content;position:sticky;top:15px}.navbtn{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:13px 12px;border:0;background:transparent;color:var(--muted);border-radius:12px;font-size:13px;font-weight:700}.navbtn span{width:22px;font-size:17px;text-align:center}.navbtn.active{background:#a8f36b12;color:var(--green)}.sidefoot{margin:18px 8px 4px;padding-top:15px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.7}.content{min-width:0}.page{display:none}.page.active{display:block}.titleline{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:3px 0 20px}.titleline h1{font-size:28px;letter-spacing:-.05em;margin:0 0 7px}.titleline p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}.netselect{max-width:190px;background:#111827;border:1px solid #ffffff20;color:var(--text);border-radius:12px;padding:11px 12px}.preview{display:flex;align-items:center;gap:8px;background:#d4ff8b0c;border:1px solid #a8f36b25;color:#c8f9a4;border-radius:12px;padding:10px 12px;font-size:11px;line-height:1.5;margin-bottom:17px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}.hero{padding:24px;background:linear-gradient(115deg,#1b3b37,#17253a 62%,#1b2534);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:210px;height:210px;border:1px solid #a8f36b18;border-radius:50%;right:-55px;top:-90px;box-shadow:0 0 0 25px #a8f36b05,0 0 0 50px #a8f36b04}.eyebrow{color:#a8f36b;font-size:10px;letter-spacing:.17em;font-weight:800}.balance{font-size:clamp(34px,6vw,48px);font-weight:800;letter-spacing:-.06em;margin:13px 0 5px}.balance small{font-size:14px;color:var(--muted);letter-spacing:0}.subbalance{font-size:12px;color:#9cb2b6}.actions{display:flex;gap:9px;margin-top:23px;flex-wrap:wrap}.actions .btn{min-width:104px}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:26px 2px 12px}.sectionhead h2{font-size:16px;margin:0;letter-spacing:-.02em}.sectionhead span{font-size:11px;color:var(--muted)}.assets{display:grid;gap:9px}.asset{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:15px 16px;background:#ffffff04;border:1px solid var(--line);border-radius:16px}.coin{display:flex;align-items:center;gap:12px;min-width:0}.coinicon{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;font-weight:900;font-size:14px;background:#ffffff0c}.coinicon.btc{color:#ffbe66;background:#ffbe6613}.coinicon.eth{color:#a9b9ff;background:#a9b9ff13}.coinicon.usdt{color:#5fe0b0;background:#5fe0b013}.coinicon.sol{color:#d0a7ff;background:#d0a7ff13}.coin strong{font-size:13px;display:block}.coin small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.amount{text-align:right}.amount strong{display:block;font-size:13px}.amount small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.miniTag{display:inline-block;color:#a8f36b;background:#a8f36b12;border-radius:6px;padding:4px 6px;font-size:9px;margin-top:5px}.activity{padding:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}.activity .big{font-size:25px;margin-bottom:6px}.settingsgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.setting{padding:17px}.setting h3{margin:0 0 7px;font-size:14px}.setting p{color:var(--muted);font-size:12px;line-height:1.65;margin:0}.callout{margin-top:14px;border:1px solid #ffcf7a2a;background:#ffcf7a09;color:#e8d5b1;padding:14px;border-radius:14px;font-size:11px;line-height:1.7}.modalback{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modalback.show{display:flex}.modal{width:min(420px,100%);background:#121b29;border:1px solid #ffffff20;border-radius:20px;padding:21px;box-shadow:0 20px 90px #0009}.modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px}.modal h2{font-size:19px;margin:0}.close{border:0;background:#ffffff0e;color:white;width:34px;height:34px;border-radius:10px;font-size:18px}.modal p{font-size:12px;line-height:1.7;color:var(--muted)}.modal .btn{width:100%;margin-top:10px}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;transition:.2s;background:#e8ffda;color:#14210f;padding:12px 16px;border-radius:12px;font-size:12px;font-weight:800;z-index:20;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}.mobilebar{display:none}
+@media(max-width:720px){.app{padding:16px 13px 95px}.layout{display:block}.side{display:none}.top{margin-bottom:22px}.brand{font-size:19px}.toplinks .btn{padding:10px;font-size:11px}.titleline{display:block}.titleline h1{font-size:25px}.netselect{margin-top:14px;width:100%;max-width:none}.hero{padding:21px 18px}.settingsgrid{grid-template-columns:1fr}.mobilebar{position:fixed;display:grid;grid-template-columns:repeat(4,1fr);bottom:0;left:0;right:0;padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:#0b101bee;backdrop-filter:blur(18px);border-top:1px solid var(--line);z-index:5}.mobilebar .navbtn{padding:8px 3px;display:flex;flex-direction:column;gap:5px;font-size:10px;text-align:center;justify-content:center}.mobilebar .navbtn span{font-size:18px}.sectionhead{margin-top:23px}.asset{padding:13px}.coinicon{width:38px;height:38px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="mark">M</div><div>money<small>WALLET PREVIEW</small></div></div>
+  <div class="toplinks"><a class="btn" href="index.html" style="text-decoration:none">← Main site</a><a class="btn primary" href="account.html" style="text-decoration:none">Log in</a></div>
+</header>
+<div class="layout">
+<aside class="side" aria-label="Wallet navigation">
+  <button class="navbtn active" data-page="overview"><span>▦</span>Overview</button>
+  <button class="navbtn" data-page="assets"><span>◈</span>Assets</button>
+  <button class="navbtn" data-page="activity"><span>↕</span>Activity</button>
+  <button class="navbtn" data-page="security"><span>⬡</span>Security & networks</button>
+  <div class="sidefoot">Self-custody concept<br>Multi-chain interface<br><span style="color:#a8f36b">Phase 1 · UI only</span></div>
+</aside>
+<main class="content">
+<section class="page active" id="overview">
+  <div class="titleline"><div><h1>Your wallet</h1><p>One place to view your multi-chain assets.</p></div><select class="netselect" id="network" aria-label="Choose network"><option value="all">All networks</option><option value="ethereum">Ethereum · Preview</option><option value="polygon">Polygon · Preview</option><option value="solana">Solana · Preview</option><option value="tron">TRON · Preview</option></select></div>
+  <div class="preview"><span class="dot"></span><span><strong>Preview mode</strong> — sample balances only. No wallet has been created and no real funds are connected.</span></div>
+  <div class="card hero"><div class="eyebrow">TOTAL PORTFOLIO VALUE</div><div class="balance">$0.00 <small>USD</small></div><div class="subbalance">No real assets connected</div><div class="actions"><button class="btn primary" data-modal="receive">↓ Receive</button><button class="btn" data-modal="send">↑ Send</button><button class="btn" data-page="assets">◈ View assets</button></div></div>
+  <div class="sectionhead"><h2>Assets</h2><span id="assetCount">4 preview assets</span></div><div class="assets" id="overviewAssets"></div>
+  <div class="sectionhead"><h2>Recent activity</h2><button class="btn" data-page="activity">View all</button></div><div class="card activity"><div class="big">↕</div><strong>No transactions yet</strong><br>On-chain activity will appear here when a real wallet integration is added in a later phase.</div>
+</section>
+<section class="page" id="assets">
+  <div class="titleline"><div><h1>Assets</h1><p>Token list and network selection preview.</p></div></div>
+  <div class="preview"><span class="dot"></span><span>Displayed quantities are zero-value interface samples, not blockchain balances.</span></div>
+  <div class="assets" id="allAssets"></div>
+</section>
+<section class="page" id="activity">
+  <div class="titleline"><div><h1>Activity</h1><p>Track wallet activity in one timeline.</p></div></div>
+  <div class="card activity"><div class="big">⌁</div><strong>Nothing to show yet</strong><br>Transaction history will be read from the selected blockchain in a future integration. This page does not invent transaction confirmations.</div>
+</section>
+<section class="page" id="security">
+  <div class="titleline"><div><h1>Security & networks</h1><p>Security-first foundations for a future self-custody wallet.</p></div></div>
+  <div class="settingsgrid">
+    <div class="card setting"><h3>🔐 Private keys</h3><p>No seed phrase or private key is generated or stored in this preview. Key management must remain separate from Supabase.</p></div>
+    <div class="card setting"><h3>🧩 Network adapters</h3><p>Separate adapters will be needed for EVM networks, Solana and TRON because their address and signing formats differ.</p></div>
+    <div class="card setting"><h3>🛡️ Transaction safety</h3><p>Before real transactions: verify chain ID, destination, token contract, fees and transaction details.</p></div>
+    <div class="card setting"><h3>☁️ Account backend</h3><p>Supabase can support account login and non-secret preferences. Never upload recovery phrases or unencrypted private keys.</p></div>
+  </div>
+  <div class="callout"><strong>Not production-ready:</strong> this page is only Phase 1 UI. Do not send funds to addresses shown elsewhere or treat these sample values as real wallet data.</div>
+</section>
+</main>
+</div>
+<nav class="mobilebar" aria-label="Mobile wallet navigation">
+  <button class="navbtn active" data-page="overview"><span>▦</span>Home</button><button class="navbtn" data-page="assets"><span>◈</span>Assets</button><button class="navbtn" data-page="activity"><span>↕</span>Activity</button><button class="navbtn" data-page="security"><span>⬡</span>Security</button>
+</nav>
+</div>
+<div class="modalback" id="modalback" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><div class="modalhead"><h2 id="modalTitle">Receive</h2><button class="close" id="closeModal" aria-label="Close">×</button></div><p id="modalText"></p><button class="btn primary" id="modalOk">Understood</button></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const coins=[
+ {symbol:"BTC",name:"Bitcoin",network:"bitcoin",icon:"₿",cls:"btc",qty:"0.000000",value:"$0.00"},
+ {symbol:"ETH",name:"Ethereum",network:"ethereum",icon:"◆",cls:"eth",qty:"0.0000",value:"$0.00"},
+ {symbol:"USDT",name:"Tether USD",network:"tron",icon:"₮",cls:"usdt",qty:"0.00",value:"$0.00"},
+ {symbol:"SOL",name:"Solana",network:"solana",icon:"◎",cls:"sol",qty:"0.0000",value:"$0.00"}
+];
+const network=document.getElementById("network");
+const networkLabels={bitcoin:"Bitcoin",ethereum:"Ethereum",polygon:"Polygon",solana:"Solana",tron:"TRON"};
+function assetMarkup(c){return '<div class="asset"><div class="coin"><div class="coinicon '+c.cls+'">'+c.icon+'</div><div><strong>'+c.symbol+'</strong><small>'+c.name+' · '+(networkLabels[c.network]||c.network)+'</small><span class="miniTag">PREVIEW</span></div></div><div class="amount"><strong>'+c.qty+' '+c.symbol+'</strong><small>'+c.value+'</small></div></div>'}
+function renderAssets(){const selected=network.value;const list=selected==="all"?coins:coins.filter(c=>c.network===selected);document.getElementById("overviewAssets").innerHTML=list.length?list.map(assetMarkup).join(""):'<div class="card activity">No sample asset for this network yet.</div>';document.getElementById("allAssets").innerHTML=list.map(assetMarkup).join("");document.getElementById("assetCount").textContent=list.length+" preview asset"+(list.length===1?"":"s")}
+network.addEventListener("change",renderAssets);renderAssets();
+function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===name));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===name));window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+const modalback=document.getElementById("modalback"),modalTitle=document.getElementById("modalTitle"),modalText=document.getElementById("modalText");
+const messages={receive:"A real receive address is not available yet. This preview does not generate addresses or accept deposits. Do not transfer crypto to this page.",send:"Sending is disabled in Phase 1. No private key, signing flow, blockchain connection or real balance is configured."};
+function openModal(kind){modalTitle.textContent=kind==="receive"?"Receive crypto":"Send crypto";modalText.textContent=messages[kind];modalback.classList.add("show")}
+document.querySelectorAll("[data-modal]").forEach(b=>b.addEventListener("click",()=>openModal(b.dataset.modal)));
+function closeModal(){modalback.classList.remove("show")}
+document.getElementById("closeModal").addEventListener("click",closeModal);document.getElementById("modalOk").addEventListener("click",closeModal);modalback.addEventListener("click",e=>{if(e.target===modalback)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+</script>
+</body></html>
