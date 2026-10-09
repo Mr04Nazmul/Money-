@@ -1,0 +1,44 @@
+name: Money Wallet Android Play Store Bundle
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android-aab:
+    name: Build Android production AAB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Expo token is configured
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "Missing EXPO_TOKEN. Add it in GitHub repository Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install app dependencies
+        working-directory: mobile-app
+        run: npm install
+
+      - name: Set up Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Initialize or link EAS project
+        working-directory: mobile-app
+        run: npx eas-cli@latest init --force --non-interactive
+
+      - name: Start Android production App Bundle build
+        working-directory: mobile-app
+        run: npx eas-cli@latest build --platform android --profile production --non-interactive --no-wait
