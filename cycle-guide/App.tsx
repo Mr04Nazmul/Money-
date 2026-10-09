@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView,ScrollView,View,Text,Pressable,StyleSheet,Linking,StatusBar} from 'react-native';
 import Svg, {Circle, Ellipse, Line, Path, Rect} from 'react-native-svg';
 import NetInfo from '@react-native-community/netinfo';
-import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
+import {BannerAd, BannerAdSize, TestIds, mobileAds} from 'react-native-google-mobile-ads';
 const data=[
 {icon:'⬅️',key:'left',bn:'রাস্তার বাম পাশে চালাও',ja:'道路の左側を通行',en:'Keep to the left',db:'সাইকেল সাধারণত গাড়ির রাস্তার বাম পাশে চলে। উল্টো পথে চালিও না।',dj:'自転車は原則として車道の左側を通行します。',de:'Bicycles generally ride on the left side of the roadway.'},
 {icon:'🚶',key:'sidewalk',bn:'ফুটপাত ব্যতিক্রম',ja:'歩道は例外',en:'Sidewalks are the exception',db:'ফুটপাতে কেবল অনুমোদিত পরিস্থিতিতে চালাও। পথচারী আগে; ধীরে চালাও।',dj:'歩道は例外です。歩行者優先で徐行します。',de:'Use sidewalks only when permitted. Pedestrians have priority; slow down.'},
@@ -73,6 +73,7 @@ const quiz=[
 ];
 export default function App(){
 const [lang,setLang]=useState(0),[tab,setTab]=useState(0),[qi,setQi]=useState(0),[pick,setPick]=useState(-1),[score,setScore]=useState(0),[done,setDone]=useState([]),[saved,setSaved]=useState([]),[expanded,setExpanded]=useState(null),[aboutOpen,setAboutOpen]=useState(false),[menuOpen,setMenuOpen]=useState(false),[morePage,setMorePage]=useState('menu'),[online,setOnline]=useState<boolean|null>(null),[checking,setChecking]=useState(false);
+useEffect(()=>{mobileAds().initialize();},[]);
 useEffect(()=>{const unsub=NetInfo.addEventListener(state=>setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false)));NetInfo.fetch().then(state=>setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false)));return ()=>unsub();},[]);
 async function checkInternet(){setChecking(true);try{const state=await NetInfo.fetch();setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false));}finally{setChecking(false);}}
 const text=(bn,ja,en)=>[bn,ja,en][lang], title=text('নিরাপদে চালাও। নিয়ম জানো।','安全に走ろう。ルールを知ろう。','Ride safe. Know the rules.');
