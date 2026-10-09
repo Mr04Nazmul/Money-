@@ -11,7 +11,10 @@
       }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_AD_UNIT_ID": "ca-app-pub-3728341118830943/4642282070"
+      }
     }
   },
   "submit": {
