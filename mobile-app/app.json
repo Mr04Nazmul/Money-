@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Money Wallet",
+    "slug": "money-wallet-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "scheme": "moneywallet",
+    "ios": {
+      "bundleIdentifier": "com.mr04nazmul.moneywallet",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.mr04nazmul.moneywallet",
+      "adaptiveIcon": {
+        "backgroundColor": "#07110D"
+      }
+    },
+    "plugins": [],
+    "extra": {
+      "walletMode": "preview"
+    }
+  }
+}
