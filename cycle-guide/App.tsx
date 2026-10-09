@@ -40,7 +40,6 @@ function RuleIllustration({rule='left',style}: {rule?:string;style?:any}) {
       <Path d="M191 132 L181 151 M208 129 L220 149" stroke="#243747" strokeWidth="9" strokeLinecap="round"/>
       <Path d="M180 151 L163 163 M220 149 L237 163" stroke="#F0B38E" strokeWidth="6" strokeLinecap="round"/>
       <Rect x="275" y="76" width="72" height="63" rx="12" fill="#F8FBF7" stroke={accent} strokeWidth="4"/>
-      <Text />
       <Circle cx="311" cy="94" r="7" fill={rule==='signal'?'#FF5656':'#E2E8E4'}/>
       <Circle cx="311" cy="108" r="7" fill={rule==='light'?'#FFE16A':'#D5DDD8'}/>
       <Circle cx="311" cy="122" r="7" fill={rule==='signal'?'#E2E8E4':'#61C99A'}/>
