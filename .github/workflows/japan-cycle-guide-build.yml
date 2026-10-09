@@ -9,7 +9,7 @@ on:
       - '.github/workflows/japan-cycle-guide-build.yml'
 jobs:
   build-android:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check Expo token
         env:
@@ -19,18 +19,20 @@ jobs:
             echo "Missing EXPO_TOKEN in repository Actions secrets."
             exit 1
           fi
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: "22"
+          package-manager-cache: false
       - name: Install dependencies
         working-directory: cycle-guide
         run: npm install
       - name: Set up EAS
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@v9
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+          eas-cache: false
       - name: Initialize or link EAS project
         working-directory: cycle-guide
         run: npx eas-cli@latest init --force --non-interactive
