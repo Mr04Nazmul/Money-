@@ -1,6 +1,12 @@
 name: Japan Cycle Guide Android Build
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'cycle-guide/**'
+      - '.github/workflows/japan-cycle-guide-build.yml'
 jobs:
   build-android:
     runs-on: ubuntu-latest
