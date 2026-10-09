@@ -2,6 +2,10 @@ name: Money Wallet Android Play Store Bundle
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'mobile-app/**'
+      - '.github/workflows/eas-android-production.yml'
 
 jobs:
   build-android-aab:
