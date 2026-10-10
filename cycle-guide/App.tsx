@@ -76,7 +76,8 @@ const quiz=[
 ];
 export default function App(){
 const [lang,setLang]=useState(0),[tab,setTab]=useState(0),[qi,setQi]=useState(0),[pick,setPick]=useState(-1),[score,setScore]=useState(0),[done,setDone]=useState([]),[saved,setSaved]=useState([]),[expanded,setExpanded]=useState(null),[aboutOpen,setAboutOpen]=useState(false),[menuOpen,setMenuOpen]=useState(false),[morePage,setMorePage]=useState('menu'),[online,setOnline]=useState<boolean|null>(null),[checking,setChecking]=useState(false);
-useEffect(()=>{mobileAds().initialize().catch(()=>{});},[]);\nuseEffect(()=>{const unsub=NetInfo.addEventListener(state=>setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false)));NetInfo.fetch().then(state=>setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false)));return ()=>unsub();},[]);
+useEffect(()=>{mobileAds().initialize().catch(()=>{});},[]);
+useEffect(()=>{const unsub=NetInfo.addEventListener(state=>setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false)));NetInfo.fetch().then(state=>setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false)));return ()=>unsub();},[]);
 async function checkInternet(){setChecking(true);try{const state=await NetInfo.fetch();setOnline(Boolean(state.isConnected&&state.isInternetReachable!==false));}finally{setChecking(false);}}
 const text=(bn,ja,en)=>[bn,ja,en][lang], title=text('নিরাপদে চালাও। নিয়ম জানো।','安全に走ろう。ルールを知ろう。','Ride safe. Know the rules.');
 const labels=[text('হোম','ホーム','Home'),text('নিয়ম','ルール','Rules'),text('জরিমানা','反則金','Fines'),text('কুইজ','クイズ','Quiz'),text('সরকারি তথ্য','公式情報','Official'),text('আরও','その他','More')];
