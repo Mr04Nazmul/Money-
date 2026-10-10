@@ -14,6 +14,14 @@
         "projectId": "51b643b8-fe1f-43b0-82bb-91b124cb90bc"
       }
     },
-    "owner": "money-wallet"
+    "owner": "money-wallet",
+    "plugins": [
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3940256099942544~3347511713"
+        }
+      ]
+    ]
   }
 }
