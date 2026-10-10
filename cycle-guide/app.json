@@ -17,7 +17,11 @@
       ]
     ],
     "extra": {
-      "appPurpose": "Japan bicycle safety education; official-source links included"
-    }
+      "appPurpose": "Japan bicycle safety education; official-source links included",
+      "eas": {
+        "projectId": "51b643b8-fe1f-43b0-82bb-91b124cb90bc"
+      }
+    },
+    "owner": "money-wallet"
   }
 }
