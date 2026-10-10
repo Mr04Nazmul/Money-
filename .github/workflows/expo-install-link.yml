@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - '.github/workflows/expo-install-link.yml'
+      - 'cycle-guide/**'
 
 permissions:
   contents: write
@@ -30,6 +31,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Check Expo dependency compatibility
+        run: npx expo-doctor
 
       - name: Verify Expo token is configured
         env:
