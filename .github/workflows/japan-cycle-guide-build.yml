@@ -48,6 +48,31 @@ jobs:
       - name: Build Android preview APK
         working-directory: cycle-guide
         run: mkdir -p artifacts && npx eas-cli@latest build --platform android --profile preview --non-interactive --local --output ./artifacts/japan-cycle-guide.apk
+      - name: Launch APK on Android emulator and check for startup crash
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          script: |
+            adb install -r cycle-guide/artifacts/japan-cycle-guide.apk
+            adb logcat -c
+            adb shell monkey -p com.mr04nazmul.japancycleguide 1
+            sleep 25
+            adb logcat -d -t 5000 > cycle-guide/artifacts/emulator-logcat.txt
+            if ! adb shell pidof com.mr04nazmul.japancycleguide; then
+              echo "App process is not running after launch. Recent crash logs:"
+              grep -E -i "FATAL EXCEPTION|AndroidRuntime|Fatal signal|com.mr04nazmul.japancycleguide" cycle-guide/artifacts/emulator-logcat.txt | tail -n 120 || true
+              exit 1
+            fi
+            echo "App process is still running after 25 seconds."
+      - name: Upload emulator startup log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: japan-cycle-guide-emulator-log
+          path: cycle-guide/artifacts/emulator-logcat.txt
+          if-no-files-found: ignore
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
