@@ -22,11 +22,18 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: cycle-guide/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+
+      - name: Verify Expo token is configured
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::Repository secret EXPO_TOKEN is missing. Add it in Settings > Secrets and variables > Actions."
+            exit 1
+          fi
 
       - name: Build installable APK on Expo EAS
         env:
