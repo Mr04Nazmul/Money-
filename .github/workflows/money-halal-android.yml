@@ -1,0 +1,113 @@
+name: Money Halal APK build and install test
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'halal-japan/android-app/**'
+      - '.github/workflows/money-halal-android.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [adfree, ads]
+    env:
+      HALAL_VARIANT: ${{ matrix.variant }}
+    defaults:
+      run:
+        working-directory: halal-japan/android-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      # GitHub's Ubuntu runner includes the Android SDK. Avoid setup-android@v3:
+      # its obsolete sdkmanager 'tools' package fails on current runners.
+      - name: Verify Android SDK
+        run: |
+          test -d "$ANDROID_HOME"
+          echo "Android SDK found: $ANDROID_HOME"
+      - name: Install required Android NDK with retry
+        run: |
+          NDK_VERSION=27.1.12297006
+          for attempt in 1 2 3; do
+            if yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;$NDK_VERSION"; then
+              test -f "$ANDROID_HOME/ndk/$NDK_VERSION/source.properties" && break
+            fi
+            rm -rf "$ANDROID_HOME/ndk/$NDK_VERSION"
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep 10
+          done
+      - name: Install project dependencies
+        run: npm install --no-audit --no-fund
+      - name: Generate Android native project
+        run: npx expo prebuild --platform android --non-interactive --no-install
+      - name: Build standalone release APK
+        run: cd android && chmod +x gradlew && ./gradlew assembleRelease --stacktrace
+      - name: Verify release APK signing and package
+        run: |
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$APK" | tee /tmp/apk-signature.txt
+          # Reject unexpected signing changes; a different signer prevents in-place upgrades.
+          grep -F "Signer #1 certificate SHA-256 digest: fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c" /tmp/apk-signature.txt
+          # A universal APK must contain native libraries for common Android CPU families.
+          unzip -Z1 "$APK" | grep -E "^lib/(arm64-v8a|armeabi-v7a|x86_64)/" | cut -d/ -f2 | sort -u | tee /tmp/apk-abis.txt
+          for abi in arm64-v8a armeabi-v7a x86_64; do grep -qx "$abi" /tmp/apk-abis.txt || { echo "Missing ABI: $abi"; exit 1; }; done
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -E "sdkVersion|targetSdkVersion|native-code"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | head -n 5
+          EXPECTED=com.nazmul.money.halalchecker
+          if [ "$HALAL_VARIANT" = ads ]; then EXPECTED=com.nazmul.money.halalchecker.ads; fi
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "package: name='$EXPECTED'"
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: money-halal-checker-${{ matrix.variant }}-release-apk
+          path: halal-japan/android-app/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 7
+  emulator-smoke:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [adfree, ads]
+        api: [28, 35]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: money-halal-checker-${{ matrix.variant }}-release-apk
+          path: apk
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Run on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          arch: x86_64
+          target: default
+          profile: pixel_2
+          disable-animations: true
+          emulator-options: -no-window -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -memory 2048 -cores 2
+          script: |
+            adb install apk/app-release.apk
+            # Verify the same signed APK can be reinstalled as an in-place update.
+            adb install -r apk/app-release.apk
+            adb uninstall "com.nazmul.money.halalchecker${{ matrix.variant == 'ads' && '.ads' || '' }}"
+            adb install apk/app-release.apk
+            adb shell monkey -p "com.nazmul.money.halalchecker${{ matrix.variant == 'ads' && '.ads' || '' }}" -c android.intent.category.LAUNCHER 1
+            sleep 15
+            adb shell pidof "com.nazmul.money.halalchecker${{ matrix.variant == 'ads' && '.ads' || '' }}"
+            adb logcat -d -t 3000 | grep -E 'FATAL EXCEPTION|Process: com\.nazmul\.japanhalalchecker|AndroidRuntime: FATAL' > crash-lines.txt || true
+            if grep -q 'FATAL EXCEPTION\|AndroidRuntime: FATAL' crash-lines.txt; then cat crash-lines.txt; exit 1; fi
