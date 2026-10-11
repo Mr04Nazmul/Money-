@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security Research Lab — Simulation</title>
+<style>
+:root{font-family:system-ui,sans-serif;color-scheme:dark;background:#0d1422;color:#eaf0ff}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;box-sizing:border-box}
+main{width:min(100%,540px);background:#17243a;border:1px solid #364966;border-radius:18px;padding:28px;box-sizing:border-box}
+h1{margin-top:0}p{line-height:1.5;color:#c6d5e9}
+label{display:block;margin:15px 0 6px}input{width:100%;box-sizing:border-box;padding:12px;background:#101c2d;color:white;border:1px solid #526683;border-radius:8px}
+button{margin:14px 8px 0 0;background:#68a9ff;border:0;border-radius:8px;padding:12px 16px;font-weight:bold;cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#101c2d;padding:14px;border-radius:8px;max-height:220px;overflow:auto}
+strong{color:#a4f4ce}
+</style></head><body><main>
+<h1>🛡️ Security Research Lab</h1>
+<p><strong>SIMULATION ONLY — Not affiliated with Facebook or Meta.</strong> Never enter real passwords or personal information. This demo does not collect credentials, clipboard, location, or IP addresses.</p>
+<label for="alias">Fictional character name</label><input id="alias" placeholder="Example: demo-user" autocomplete="off" maxlength="40">
+<button id="simulate">Simulate demo login</button>
+<button id="clue">Record phishing-awareness exercise</button>
+<h2>Local test dashboard</h2><p id="status" role="status">Ready.</p><pre id="events">Loading…</pre>
+<script>
+const status = document.querySelector('#status');
+const events = document.querySelector('#events');
+async function refresh() {
+  try {
+    const r = await fetch('/api/events'); if (!r.ok) throw Error('API error');
+    events.textContent = JSON.stringify(await r.json(), null, 2);
+  } catch { events.textContent = 'Start the local Node.js server to see test events.'; }
+}
+async function record(type) {
+  const alias = document.querySelector('#alias').value.trim();
+  if (type === 'demo-login' && !alias) { status.textContent = 'Enter a fictional character name first.'; return; }
+  // The alias stays in this browser; the server stores only event type and scenario.
+  try {
+    const r = await fetch('/api/events', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,scenario:type==='demo-login'?'training-login':'recognize-warning-signs'})});
+    if (!r.ok) throw Error('API error');
+    status.textContent = 'Saved a non-sensitive simulation event.';
+    await refresh();
+  } catch { status.textContent = 'Unable to save demo event. Is the local server running?'; }
+}
+document.querySelector('#simulate').onclick = () => record('demo-login');
+document.querySelector('#clue').onclick = () => record('phishing-clue');
+refresh();
+</script></main></body></html>
