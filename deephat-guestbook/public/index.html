@@ -1,1 +1,152 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community Guestbook</title><style>body{font:16px system-ui;background:#f3f6fb;color:#162238;margin:0;padding:2rem}main{max-width:620px;margin:auto;background:white;padding:2rem;border-radius:18px;box-shadow:0 6px 28px #0001}input,textarea,button{font:inherit;padding:12px;border-radius:8px;border:1px solid #ccd3de;width:100%;box-sizing:border-box;margin:8px 0}button{background:#2458cb;color:white;cursor:pointer}li{margin:12px 0}</style></head><body><main><h1>Community Guestbook</h1><p>Leave a friendly public message. Don't share passwords or private information.</p><form id="form"><label>Display name<input id="name" maxlength="50" required></label><label>Message<textarea id="message" maxlength="500" required></textarea></label><button>Post message</button></form><p id="status" role="status"></p><h2>Messages</h2><ul id="messages"></ul></main><script type="module">import {createClient} from 'https://esm.sh/@supabase/supabase-js@2';const url='YOUR_SUPABASE_URL',key='YOUR_SUPABASE_ANON_KEY';const status=document.querySelector('#status');if(url.startsWith('YOUR_')){status.textContent='Setup needed: configure Supabase URL and publishable/anon key in index.html';}else{const db=createClient(url,key);async function refresh(){const {data,error}=await db.from('guestbook_entries').select('display_name,message,created_at').order('created_at',{ascending:false}).limit(50);if(error){status.textContent='Could not load messages';return}const ul=document.querySelector('#messages');ul.replaceChildren();for(const item of data){const li=document.createElement('li');li.textContent=item.display_name+': '+item.message;ul.append(li)}}document.querySelector('#form').addEventListener('submit',async e=>{e.preventDefault();const display_name=document.querySelector('#name').value.trim(),message=document.querySelector('#message').value.trim();if(!display_name||!message)return;const {error}=await db.from('guestbook_entries').insert({display_name,message});status.textContent=error?'Unable to post message':'Message submitted';if(!error){e.target.reset();refresh()}});refresh()}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepHat Secure Guestbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .input-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-slate-900 text-white p-8">
+            <h1 class="text-3xl font-bold tracking-tight">🔐 DeepHat Secure Guestbook</h1>
+            <p class="text-slate-300 mt-2">Share your contact and social details securely. All data is encrypted in transit.</p>
+        </div>
+
+        <!-- Form -->
+        <div class="p-8">
+            <form id="guestbookForm" class="space-y-6">
+                
+                <!-- Name & Email -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                        <input type="text" id="name" name="name" required class="input-field w-full border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                        <input type="email" id="email" name="email" required class="input-field w-full border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300" placeholder="john@example.com">
+                    </div>
+                </div>
+
+                <!-- Phone & Notes -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="input-field w-full border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300" placeholder="+880 1700-000000">
+                    </div>
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes / Message</label>
+                        <input type="text" id="notes" name="notes" class="input-field w-full border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300" placeholder="Any extra details...">
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="facebook" class="block text-sm font-medium text-gray-700 mb-1">Facebook Profile</label>
+                        <input type="url" id="facebook" name="facebook" class="input-field w-full border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300" placeholder="https://facebook.com/...">
+                    </div>
+                    <div>
+                        <label for="instagram" class="block text-sm font-medium text-gray-700 mb-1">Instagram Profile</label>
+                        <input type="url" id="instagram" name="instagram" class="input-field w-full border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300" placeholder="https://instagram.com/...">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 transform hover:scale-[1.01] focus:ring-4 focus:ring-blue-300">
+                        Submit Details
+                    </button>
+                    <p id="status" class="mt-4 text-center text-sm hidden"></p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // Replace these with your actual Supabase credentials
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL'; 
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const form = document.getElementById('guestbookForm');
+        const status = document.getElementById('status');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect Data
+            const data = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                facebook: document.getElementById('facebook').value.trim(),
+                instagram: document.getElementById('instagram').value.trim(),
+                notes: document.getElementById('notes').value.trim(),
+                created_at: new Date().toISOString()
+            };
+
+            // Validate URLs
+            const urlFields = ['facebook', 'instagram'];
+            for (let field of urlFields) {
+                if (data[field] && !/^https?:\/\//i.test(data[field])) {
+                    data[field] = 'https://' + data[field]; // Auto-prepend https if missing
+                }
+            }
+
+            // UI Feedback
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Securing Data...';
+            status.classList.add('hidden');
+
+            try {
+                const { error } = await supabase
+                    .from('guestbook')
+                    .insert([data]);
+
+                if (error) throw error;
+
+                // Success
+                status.textContent = '✅ Details submitted successfully!';
+                status.classList.remove('hidden');
+                status.classList.add('text-green-600');
+                
+                // Reset form
+                form.reset();
+                
+            } catch (err) {
+                console.error("Supabase Error:", err);
+                // Handle duplicate key constraint (email)
+                if (err.code === '23505') {
+                    status.textContent = '❌ Error: This email has already been submitted.';
+                } else {
+                    status.textContent = '❌ Error: ' + err.message;
+                }
+                status.classList.remove('hidden');
+                status.classList.add('text-red-600');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Details';
+            }
+        });
+    </script>
+</body>
+</html>
