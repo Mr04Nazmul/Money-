@@ -63,6 +63,8 @@ jobs:
           for abi in arm64-v8a armeabi-v7a x86_64; do grep -qx "$abi" /tmp/apk-abis.txt || { echo "Missing ABI: $abi"; exit 1; }; done
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -E "sdkVersion|targetSdkVersion|native-code"
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | head -n 5
+          # Keep the install floor at Android 7.0 (API 24).
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -Fx "sdkVersion:'24'"
           EXPECTED=com.nazmul.money.halalchecker
           if [ "$HALAL_VARIANT" = ads ]; then EXPECTED=com.nazmul.money.halalchecker.ads; fi
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "package: name='$EXPECTED'"
@@ -79,7 +81,7 @@ jobs:
       fail-fast: false
       matrix:
         variant: [adfree, ads]
-        api: [28, 35]
+        api: [24, 28, 35, 36]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -109,5 +111,5 @@ jobs:
             adb shell monkey -p "com.nazmul.money.halalchecker${{ matrix.variant == 'ads' && '.ads' || '' }}" -c android.intent.category.LAUNCHER 1
             sleep 15
             adb shell pidof "com.nazmul.money.halalchecker${{ matrix.variant == 'ads' && '.ads' || '' }}"
-            adb logcat -d -t 3000 | grep -E 'FATAL EXCEPTION|Process: com\.nazmul\.japanhalalchecker|AndroidRuntime: FATAL' > crash-lines.txt || true
+            adb logcat -d -t 3000 | grep -E 'FATAL EXCEPTION|Process: com\.nazmul\.money\.halalchecker|AndroidRuntime: FATAL' > crash-lines.txt || true
             if grep -q 'FATAL EXCEPTION\|AndroidRuntime: FATAL' crash-lines.txt; then cat crash-lines.txt; exit 1; fi
