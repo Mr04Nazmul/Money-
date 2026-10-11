@@ -1,10 +1,15 @@
--- Public guestbook demo. Enable anti-spam controls before publishing widely.
-create table if not exists public.guestbook_entries (
- id bigint generated always as identity primary key,
- display_name text not null check (char_length(display_name) between 1 and 50),
- message text not null check (char_length(message) between 1 and 500),
- created_at timestamptz not null default now()
+-- Private contact guestbook: do not expose email/phone/social handles to anonymous readers.
+create table if not exists public.guestbook (
+  id bigint generated always as identity primary key,
+  name text not null,
+  email text not null unique,
+  phone text,
+  facebook text,
+  instagram text,
+  notes text,
+  created_at timestamptz default now() not null
 );
-alter table public.guestbook_entries enable row level security;
-create policy "Public can read guestbook" on public.guestbook_entries for select to anon using (true);
--- Posting is disabled by default until rate limiting, moderation and CAPTCHA are configured.
+alter table public.guestbook enable row level security;
+-- No public SELECT policy: personal information stays private.
+-- No public INSERT policy until abuse protection and consent are configured.
+create index if not exists idx_guestbook_email on public.guestbook(email);
