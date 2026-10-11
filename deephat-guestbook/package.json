@@ -1,0 +1,11 @@
+{
+  "name": "deephat-guestbook",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx serve public"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}
