@@ -1,0 +1,21 @@
+name: Verify Halal Checker website
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test ingredient classification
+        run: node tests/ingredient-regression.cjs
+      - name: Test pages, barcode lookup and fallback with mocked API
+        run: |
+          npm install --no-save --prefix /tmp/halal-tests linkedom@0.18.12
+          NODE_PATH=/tmp/halal-tests/node_modules node tests/check-app.cjs
