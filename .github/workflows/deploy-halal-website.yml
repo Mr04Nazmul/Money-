@@ -1,0 +1,35 @@
+name: Deploy Japan Halal Checker Website
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: japan-halal-pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate and stage public assets only
+        run: |
+          mkdir -p public
+          for file in index.html app-config.js halal-shopping-records.js icon.svg languages.js locale-pack.js manifest.webmanifest manufacturer-records.js product-data.js store-records.js sw.js; do
+            test -f "$file" || exit 1
+            cp "$file" public/
+          done
+          touch public/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4
