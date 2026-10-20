@@ -45,3 +45,6 @@ async def voice(text: str = Form(...), ref_text: str = Form(...), reference: Upl
         sf.write(out, samples, 24000, format="WAV")
         out.seek(0)
     return StreamingResponse(out, media_type="audio/wav", headers={"Cache-Control":"no-store"})
+
+from chat import router as chat_router
+app.include_router(chat_router)
