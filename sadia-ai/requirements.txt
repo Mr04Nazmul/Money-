@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+python-multipart
+numpy
+soundfile
+transformers
+# Install IndicF5 dependencies per https://github.com/AI4Bharat/IndicF5
