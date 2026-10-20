@@ -1,0 +1,14 @@
+*.wav
+*.mp3
+*.m4a
+*.mp4
+*.mov
+*.png
+*.jpg
+*.jpeg
+.env
+.env.*
+__pycache__/
+.venv/
+outputs/
+references/
